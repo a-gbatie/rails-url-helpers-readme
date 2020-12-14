@@ -1,0 +1,32 @@
+describe 'index page' do
+  it 'links to post page' do
+    second_post = Post.create(title: "My Title", description: "My post description")
+    visit posts_path
+    expect(page).to have_link(second_post.title, href: post_path(second_post))
+  end
+end
+
+# <% @posts.each do |post| %>
+#   <div><a href='<%= "/posts/#{post.id}" %>'><%= post.title %></a></div>
+# <% end %> 
+
+# THIS ↑↑↑ BECOMES THIS ↓↓↓ 
+# The 'link_to' cleans up the code and gets rid of multiple ERB calls on the same line
+
+# <% @posts.each do |post| %>
+#   <div><%= link_to post.title, "/posts/#{post.id}" %></div>
+# <% end %> 
+
+# THIS ↑↑↑ BECOMES THIS ↓↓↓ 
+# This goes from hard coding to using 'post_path' and passing in the 'post' argument.
+
+# <% @posts.each do |post| %>
+#   <div><%= link_to post.title, post_path(post.id) %></div>
+# <% end %> 
+
+# THIS ↑↑↑ BECOMES THIS ↓↓↓ 
+# Rails knows that the post object would have an ID attribute so that can be taken out.
+
+<% @posts.each do |post| %>
+  <div><%= link_to post.title, post_path(post) %></div>
+<% end %>
